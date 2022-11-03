@@ -36,6 +36,8 @@ Follow the instructions in the following piece of text to get your reward.
 Oh, it has been encrypted. :grinning-face:
 So you will have to find the function to decode it..."""
 
+check = None
+
 # TODO: get request to back end with username and user
 # replace the next print with the request
 user = os.getenv("USER")
@@ -50,6 +52,9 @@ def decoder(text):
         new_text = ""
         for c in text:
             new_text += encoding.get(c, c)
+        if text[:10] == 'tIVZG DLIP':
+            global check
+            check = new_text[:10]
         return new_text
     else:
         return "Please give me some text to decode."
@@ -70,19 +75,23 @@ mLD, BLF XZM TL GL GSV HVXLMW KZIG:
 tL LM ZMW URMW GSV UFMXGRLM GL HFYNRG BLFI IVHFOG GL GSV TZNV KOZGULIN.
 """
 
+failed_one = "Sorry, you did not solve the first part of the puzzle. Try again."
 
 def submit():
-    url = BASE_URI + "/imported/" + decoder(user.capitalize())
+    if check != "Great work":
+        print(failed_one)
+        return
+    url = BASE_URI + "/imported/" \
+                   + check + '&' \
+                   + decoder(user.capitalize())
     result = requests.get(url).json()
     print(result)
+    return
 
 
 ##################
 ## Main program ##
 ##################
-
-
-print(decoder(puzzle_text_encoded))
 
 answer = input(message_on_import)
 

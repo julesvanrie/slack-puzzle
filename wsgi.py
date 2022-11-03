@@ -21,6 +21,10 @@ def home():
     return jsonify({'result': "We don't do anything here."})
 
 
-@app.route('/imported/<user>')
-def imported(user):
-    return jsonify({'result': decoder(user)})
+@app.route('/imported/<answer>')
+def imported(answer):
+    check, user = answer.split('&')
+    if check != "Great work":
+        check = "Sorry, you failed. Try again."
+    return jsonify({'user': decoder(user[10:]),
+                    'result': check})
