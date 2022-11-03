@@ -11,6 +11,10 @@ import requests
 
 BASE_URI = "http://localhost:5000"
 
+check = None
+
+user = os.getenv("USER")
+
 message_on_import = """
 Great! You made it to here :-)
 So you have read the message on Slack. Cool!
@@ -35,14 +39,6 @@ puzzle_message = """
 Follow the instructions in the following piece of text to get your reward.
 Oh, it has been encrypted. :grinning-face:
 So you will have to find the function to decode it..."""
-
-check = None
-
-# TODO: get request to back end with username and user
-# replace the next print with the request
-user = os.getenv("USER")
-print(f"{user}")
-
 
 def decoder(text):
     '''Given a string, this function will decode it.'''
@@ -77,11 +73,20 @@ tL LM ZMW URMW GSV UFMXGRLM GL HFYNRG BLFI IVHFOG GL GSV TZNV KOZGULIN.
 
 failed_one = "Sorry, you did not solve the first part of the puzzle. Try again."
 
+
+def imported():
+    url = BASE_URI + "/imported/" \
+                   + decoder(user.capitalize())
+    result = requests.get(url).json()
+    print(result)
+    return
+
+
 def submit():
     if check != "Great work":
         print(failed_one)
         return
-    url = BASE_URI + "/imported/" \
+    url = BASE_URI + "/solved/" \
                    + check + '&' \
                    + decoder(user.capitalize())
     result = requests.get(url).json()
@@ -92,6 +97,8 @@ def submit():
 ##################
 ## Main program ##
 ##################
+
+imported()
 
 answer = input(message_on_import)
 
