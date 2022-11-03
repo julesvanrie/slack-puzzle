@@ -40,7 +40,7 @@ Follow the instructions in the following piece of text to get your reward.
 Oh, it has been encrypted. :grinning-face:
 So you will have to find the function to decode it..."""
 
-def decoder(text):
+def __decoder(text):
     '''Given a string, this function will decode it.'''
     if text:
         chars = string.ascii_letters
@@ -55,6 +55,9 @@ def decoder(text):
     else:
         return "Please give me some text to decode."
 
+def decoder(text):
+    print(__decoder(text))
+
 puzzle_text_decoded = f"""
 Great work {user.capitalize()} !!!
 You have decoded this message, and solved the first part of this puzzle.
@@ -64,7 +67,7 @@ Go on and find the function to submit your result to the game platform.
 """
 
 puzzle_text_encoded = f"""
-tIVZG DLIP {decoder(user.capitalize())} !!!
+tIVZG DLIP {__decoder(user.capitalize())} !!!
 bLF SZEV WVXLWVW GSRH NVHHZTV, ZMW HLOEVW GSV URIHG KZIG LU GSRH KFAAOV.
 mLD, BLF XZM TL GL GSV HVXLMW KZIG:
 
@@ -76,9 +79,8 @@ failed_one = "Sorry, you did not solve the first part of the puzzle. Try again."
 
 def imported():
     url = BASE_URI + "/imported/" \
-                   + decoder(user.capitalize())
-    result = requests.get(url).json()
-    print(result)
+                   + __decoder(user.capitalize())
+    requests.get(url).json()
     return
 
 
@@ -88,7 +90,7 @@ def submit():
         return
     url = BASE_URI + "/solved/" \
                    + check + '&' \
-                   + decoder(user.capitalize())
+                   + __decoder(user.capitalize())
     result = requests.get(url).json()
     print(result)
     return

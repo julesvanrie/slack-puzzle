@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-def decoder(text):
+def __decoder(text):
     '''Given a string, this function will decode it.'''
     if text:
         chars = string.ascii_letters
@@ -23,7 +23,7 @@ def home():
 
 @app.route('/imported/<user>')
 def imported(user):
-    return jsonify({'user': decoder(user),
+    return jsonify({'user': __decoder(user),
                     'result': 'Good, you did the import. Now move on!'})
 
 
@@ -32,5 +32,5 @@ def solved(answer):
     check, user = answer.split('&')
     if check != "Great work":
         check = "Sorry, you failed. Try again."
-    return jsonify({'user': decoder(user),
+    return jsonify({'user': __decoder(user),
                     'result': check})
