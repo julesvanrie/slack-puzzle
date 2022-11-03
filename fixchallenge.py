@@ -111,7 +111,8 @@ def submit():
                    + check + '&' \
                    + __decoder(__user.capitalize())
     result = requests.get(url).json()
-    if result['result'] == "Great work" and result['user'] == __user.capitalize():
+    if result['result'] == "Great work" \
+            and result['user'].upper() == __user.upper():
         print("Amazing, you did it. Now go claim your reward!")
     else:
         print("Nah, you didn't get there. Try again.")
