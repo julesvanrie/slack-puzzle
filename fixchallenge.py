@@ -9,14 +9,19 @@ import requests
 ## Setting it all up ##
 #######################
 
-BASE_URI = "http://localhost:5000"
+BASE_URI = "https://slack-puzzle-jvr.herokuapp.com/"
+# BASE_URI = "http://localhost:5000"
 
 check = None
 
 __user = os.getenv("USER")
 
+__first_message = """
+\033[91mThis might take a minute. Please be patient and stay here.
+"""
+
 __message_on_import = """
-Great! You made it to here :-)
+\033[94mGreat! You made it to here :-)
 So you have read the message on Slack. Cool!
 
 But did you leave a little green check or some other emoji
@@ -28,15 +33,15 @@ the next part of this little puzzle.
 Did you do it?    """
 
 __wait_for_check = """
-OH NO!!! Please leave a checkbox or something else then.
+\033[91mOH NO!!! Please leave a checkbox or something else then.
 Did you do it now?    """
 
 __thank_you_for_check = """
-Thank you, very much appreciated.
+\033[92mThank you, very much appreciated.
 Now, let's move on to the next part..."""
 
 __puzzle_message = """
-Follow the instructions in the following piece of text to get your reward.
+\033[94mFollow the instructions in the following piece of text to get your reward.
 Oh, it has been encrypted. :grinning-face:
 So you will have to find the function to decode it..."""
 
@@ -57,7 +62,14 @@ def __decoder(text):
 
 def decoder(text):
     '''Given a string, this function will decode it and print it
-    out for you.'''
+    out for you. So no need to do any prints or so. Just call the function.
+
+    To pass a multi-line string, you will need to enclose it in triple quotes.
+    Like this: \"\"\"A long multi-line
+    piece of text.\"\"\"
+
+
+    '''
     print(__decoder(text))
 
 __puzzle_text_decoded = f"""
@@ -71,7 +83,7 @@ Go on and find the function to submit your result to the game platform.
 __puzzle_text_encoded = f"""
 tIVZG DLIP {__decoder(__user.capitalize())} !!!
 bLF SZEV WVXLWVW GSRH NVHHZTV, ZMW HLOEVW GSV URIHG KZIG LU GSRH KFAAOV.
-mLD, BLF XZM TL GL GSV HVXLMW KZIG:
+mLD, BLF XZM TL GL GSV HVXLMW KZIG GL URMZOOB XOZRN BLFI IVDZIW:
 
 tL LM ZMW URMW GSV UFMXGRLM GL HFYNRG BLFI IVHFOG GL GSV TZNV KOZGULIN.
 """
@@ -87,6 +99,11 @@ def __imported():
 
 
 def submit():
+    """Just run this function without any arguments.
+    It will connect to the game platform in the cloud,
+    and will tell you if you succeeded.
+
+    """
     if check != "Great work":
         print(__failed_one)
         return
@@ -94,13 +111,18 @@ def submit():
                    + check + '&' \
                    + __decoder(__user.capitalize())
     result = requests.get(url).json()
-    print(result)
+    if result['result'] == "Great work" and result['user'] == __user:
+        print("Amazing, you did it. Now go claim your reward!")
+    else:
+        print("Nah, you didn't get there. Try again.")
     return
 
 
 ##################
 ## Main program ##
 ##################
+
+print(__first_message)
 
 __imported()
 
@@ -114,4 +136,4 @@ print(__thank_you_for_check)
 
 # Showing the encrypted message
 print(__puzzle_message)
-print(__puzzle_text_encoded)
+print('\033[95m ' + __puzzle_text_encoded)
