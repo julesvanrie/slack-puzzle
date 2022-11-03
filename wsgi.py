@@ -23,7 +23,7 @@ def home():
 
 @app.route('/imported/<user>')
 def imported(user):
-    app.logger.info(f"{__decoder(user)} just imported.}")
+    app.logger.info(f"{__decoder(user)} just imported.")
     return jsonify({'user': __decoder(user),
                     'result': 'Good, you did the import. Now move on!'})
 
@@ -33,7 +33,7 @@ def solved(answer):
     check, user = answer.split('&')
     if check != "Great work":
         check = "Sorry, you failed. Try again."
-        app.logger.info(f"{__decoder(user)} just did a failed attempt.}")
-    app.logger.info(f"{__decoder(user)} just cracked it.}")
+        app.logger.info(f"{__decoder(user)} just did a failed attempt.")
+    app.logger.info(f"{__decoder(user)} just cracked it.")
     return jsonify({'user': __decoder(user),
                     'result': check})
