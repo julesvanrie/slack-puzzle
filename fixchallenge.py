@@ -3,11 +3,13 @@ our slack messages."""
 
 import os
 import string
-# import requests
+import requests
 
 #######################
 ## Setting it all up ##
 #######################
+
+BASE_URI = "http://localhost:5000"
 
 message_on_import = """
 Great! You made it to here :-)
@@ -70,8 +72,9 @@ tL LM ZMW URMW GSV UFMXGRLM GL HFYNRG BLFI IVHFOG GL GSV TZNV KOZGULIN.
 
 
 def submit():
-    print(decoder(user.capitalize()))
-
+    url = BASE_URI + "/imported/" + decoder(user.capitalize())
+    result = requests.get(url).json()
+    print(result)
 
 
 ##################
