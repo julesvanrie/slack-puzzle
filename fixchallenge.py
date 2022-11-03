@@ -13,9 +13,9 @@ BASE_URI = "http://localhost:5000"
 
 check = None
 
-user = os.getenv("USER")
+__user = os.getenv("USER")
 
-message_on_import = """
+__message_on_import = """
 Great! You made it to here :-)
 So you have read the message on Slack. Cool!
 
@@ -27,15 +27,15 @@ the next part of this little puzzle.
 
 Did you do it?    """
 
-wait_for_check = """
+__wait_for_check = """
 OH NO!!! Please leave a checkbox or something else then.
 Did you do it now?    """
 
-thank_you_for_check = """
+__thank_you_for_check = """
 Thank you, very much appreciated.
 Now, let's move on to the next part..."""
 
-puzzle_message = """
+__puzzle_message = """
 Follow the instructions in the following piece of text to get your reward.
 Oh, it has been encrypted. :grinning-face:
 So you will have to find the function to decode it..."""
@@ -56,41 +56,43 @@ def __decoder(text):
         return "Please give me some text to decode."
 
 def decoder(text):
+    '''Given a string, this function will decode it and print it
+    out for you.'''
     print(__decoder(text))
 
-puzzle_text_decoded = f"""
-Great work {user.capitalize()} !!!
+__puzzle_text_decoded = f"""
+Great work {__user.capitalize()} !!!
 You have decoded this message, and solved the first part of this puzzle.
 Now, you can go to the second part to finally claim your reward:
 
 Go on and find the function to submit your result to the game platform.
 """
 
-puzzle_text_encoded = f"""
-tIVZG DLIP {__decoder(user.capitalize())} !!!
+__puzzle_text_encoded = f"""
+tIVZG DLIP {__decoder(__user.capitalize())} !!!
 bLF SZEV WVXLWVW GSRH NVHHZTV, ZMW HLOEVW GSV URIHG KZIG LU GSRH KFAAOV.
 mLD, BLF XZM TL GL GSV HVXLMW KZIG:
 
 tL LM ZMW URMW GSV UFMXGRLM GL HFYNRG BLFI IVHFOG GL GSV TZNV KOZGULIN.
 """
 
-failed_one = "Sorry, you did not solve the first part of the puzzle. Try again."
+__failed_one = "Sorry, you did not solve the first part of the puzzle. Try again."
 
 
-def imported():
+def __imported():
     url = BASE_URI + "/imported/" \
-                   + __decoder(user.capitalize())
+                   + __decoder(__user.capitalize())
     requests.get(url).json()
     return
 
 
 def submit():
     if check != "Great work":
-        print(failed_one)
+        print(__failed_one)
         return
     url = BASE_URI + "/solved/" \
                    + check + '&' \
-                   + __decoder(user.capitalize())
+                   + __decoder(__user.capitalize())
     result = requests.get(url).json()
     print(result)
     return
@@ -100,16 +102,16 @@ def submit():
 ## Main program ##
 ##################
 
-imported()
+__imported()
 
-answer = input(message_on_import)
+__answer = input(__message_on_import)
 
-while answer.upper() not in ["YES", "Y", "I DID", "YES!"]:
-    answer = input(wait_for_check)
+while __answer.upper() not in ["YES", "Y", "I DID", "YES!"]:
+    __answer = input(__wait_for_check)
 
-print(thank_you_for_check)
+print(__thank_you_for_check)
 
 
 # Showing the encrypted message
-print(puzzle_message)
-print(puzzle_text_encoded)
+print(__puzzle_message)
+print(__puzzle_text_encoded)
