@@ -62,3 +62,7 @@ Please react with a little :check: to this message when you have read it.
 - Tracking if students have put a :check: on Slack
 - Give some hint that they can use everything in the module file to solve the puzzle (discovering through Tab and Shift-Tab)
 - Some kind of leaderboard on the online platform.
+
+# Licensing
+
+This project is licensed under the terms of the GNU General Public License v3.0.
